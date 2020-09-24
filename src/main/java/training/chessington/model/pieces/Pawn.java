@@ -17,29 +17,34 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowedMoves = new ArrayList<>();
 
-        if (isStartingPosition(from)  && isBlack() && hasNoPiecesBelow(from, board)){
-            allowedMoves.add(new Move(from,new Coordinates(from.getCol() - 1, from.getCol())));
-            allowedMoves.add(new Move(from,new Coordinates(from.getCol() - 2, from.getCol())));
-        } else {
-            allowedMoves.add(new Move(from,new Coordinates(from.getCol() - 1, from.getCol())));
+        if (isWhite() && hasNoPiecesAbove(from, board)){
+            allowedMoves.add(new Move(from, from.plus(-1, 0)));
         }
 
-        if (isStartingPosition(from)  && isWhite() && hasNoPiecesAbove(from, board)){
-            allowedMoves.add(new Move(from,new Coordinates(from.getCol() + 1, from.getCol())));
-            allowedMoves.add(new Move(from,new Coordinates(from.getCol() + 2, from.getCol())));
-        } else {
-            allowedMoves.add(new Move(from,new Coordinates(from.getCol() + 1, from.getCol())));
+        if (isBlack() && hasNoPiecesBelow(from, board)){
+            allowedMoves.add(new Move(from, from.plus(+1, 0)));
         }
+
+        if (isStartingPosition(from)){
+            if (isWhite() && hasNoPiecesAboveTwoSteps(from,board)){
+                allowedMoves.add(new Move(from, from.plus(-2, 0)));
+            }
+
+            if (isBlack() && hasNoPiecesBelowTwoSteps(from, board)){
+                    allowedMoves.add(new Move(from, from.plus(+2, 0)));
+            }
+        }
+
         return allowedMoves;
     }
 
     public boolean isStartingPosition(Coordinates from){
 
-        if ( from.getRow() == 1 ){
+        if ( from.getRow() == 1 && isBlack() ){
             return true;
         }
 
-        if ( from.getRow() == 6 ){
+        if ( from.getRow() == 6 && isWhite() ){
             return true;
         }
         return false;
@@ -53,10 +58,18 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean hasNoPiecesAbove(Coordinates from, Board board){
-        return board.get(from.plus(1 ,0)) == null;
+        return board.get(from.plus(-1 ,0)) == null;
+    }
+
+    public boolean hasNoPiecesAboveTwoSteps(Coordinates from, Board board){
+        return board.get(from.plus(-2 ,0)) == null;
     }
 
     public boolean hasNoPiecesBelow(Coordinates from, Board board) {
-        return board.get(from.plus(-1 ,0)) == null;
+        return board.get(from.plus(+1 ,0)) == null;
+    }
+
+    public boolean hasNoPiecesBelowTwoSteps(Coordinates from, Board board) {
+        return board.get(from.plus(+2 ,0)) == null;
     }
 }
