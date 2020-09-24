@@ -58,7 +58,10 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean hasNoPiecesAbove(Coordinates from, Board board){
-        return board.get(from.plus(-1 ,0)) == null;
+        if( isWhiteMoveInsideBoard(from)){
+            return board.get(from.plus(-1 ,0)) == null;
+        }
+        return false;
     }
 
     public boolean hasNoPiecesAboveTwoSteps(Coordinates from, Board board){
@@ -66,10 +69,21 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean hasNoPiecesBelow(Coordinates from, Board board) {
-        return board.get(from.plus(+1 ,0)) == null;
+        if (isBlackMoveInsideBoard(from)) {
+            return board.get(from.plus(+1 ,0)) == null;
+        }
+        return false;
     }
 
     public boolean hasNoPiecesBelowTwoSteps(Coordinates from, Board board) {
         return board.get(from.plus(+2 ,0)) == null;
+    }
+
+    public boolean isBlackMoveInsideBoard(Coordinates from){
+        return from.getRow() + 1 < 8;
+    }
+
+    public boolean isWhiteMoveInsideBoard(Coordinates from){
+        return from.getRow() -1 >= 0;
     }
 }
