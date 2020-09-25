@@ -17,17 +17,22 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowedMoves = new ArrayList<>();
 
-        if (isWhite() && hasNoPiecesAbove(from, board)){
+       // moveStep(from, board, 1step);
+
+       // moveStep(from, board, 2steps)
+
+
+        if (hasNoPiecesInFront(from, board,1)){
             addMove(allowedMoves, from,from.plus(-1, 0));
         }
-        if (isBlack() && hasNoPiecesBelow(from, board)){
+        if (hasNoPiecesInFront(from, board,1)){
             addMove(allowedMoves, from,from.plus(+1, 0));
         }
         if (isStartingPosition(from) && !allowedMoves.isEmpty()){
-            if (isWhite() && hasNoPiecesAboveTwoSteps(from,board)){
+            if (hasNoPiecesInFront(from,board,2)){
                 addMove(allowedMoves, from,from.plus(-2, 0));
             }
-            if (isBlack() && hasNoPiecesBelowTwoSteps(from, board)){
+            if (hasNoPiecesInFront(from, board,2)){
                 addMove(allowedMoves, from,from.plus(+2, 0));
             }
         }
@@ -36,6 +41,26 @@ public class Pawn extends AbstractPiece {
 
         return allowedMoves;
     }
+
+    public boolean hasNoPiecesInFront(Coordinates from, Board board, int steps){
+
+        // if white check row -1
+        if (isWhite() && isValidMove(from.plus(-1 *steps,0))){
+            return board.get(from.plus(-1 * steps,0)) == null;
+        }
+        // if black check row +1
+        if (isBlack() && isValidMove(from.plus(+1*steps,0))){
+            return board.get(from.plus(+1 * steps,0)) == null;
+        }
+        return false;
+
+    }
+
+//    public void moveOneStep(Coordinates from, Board board, List<Move> allowedMoves){
+//
+//    }
+
+
 
     public boolean isStartingPosition(Coordinates from){
         return isBlack() ? from.getRow() == 1 : from.getRow() == 6;
