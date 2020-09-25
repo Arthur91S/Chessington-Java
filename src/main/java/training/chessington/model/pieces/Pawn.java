@@ -20,11 +20,9 @@ public class Pawn extends AbstractPiece {
         if (isWhite() && hasNoPiecesAbove(from, board)){
             addMove(allowedMoves, from,from.plus(-1, 0));
         }
-
         if (isBlack() && hasNoPiecesBelow(from, board)){
             addMove(allowedMoves, from,from.plus(+1, 0));
         }
-
         if (isStartingPosition(from) && !allowedMoves.isEmpty()){
             if (isWhite() && hasNoPiecesAboveTwoSteps(from,board)){
                 addMove(allowedMoves, from,from.plus(-2, 0));
@@ -76,37 +74,41 @@ public class Pawn extends AbstractPiece {
     }
 
     public void canCaptureRightWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        if (canMoveRight(from) && isValidMove(from.plus(+1,+1))){
-            Piece potentialEnemy = board.get(from.plus(+1, +1));
+        Coordinates to = from.plus(+1,+1);
+        if (canMoveRight(from) && isValidMove(to)){
+            Piece potentialEnemy = board.get(to);
 
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)){
-                addMove(allowedMoves, from,from.plus(+1, +1));
+                addMove(allowedMoves, from, to);
             }
         }
     }
     public void canCaptureLeftWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        if (canMoveLeft(from) && isValidMove(from.plus(+1, -1))) {
-            Piece potentialEnemy = board.get(from.plus(+1, -1));
+        Coordinates to = from.plus(+1,-1);
+        if (canMoveLeft(from) && isValidMove(to)) {
+            Piece potentialEnemy = board.get(to);
 
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
-                addMove(allowedMoves, from,from.plus(+1, -1));
+                addMove(allowedMoves, from,to);
             }
         }
     }
     public void canCaptureRightBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        if (canMoveRight(from) && isValidMove(from.plus(-1,+1))) {
-            Piece potentialEnemy = board.get(from.plus(-1, +1));
+        Coordinates to = from.plus(-1,+1);
+        if (canMoveRight(from) && isValidMove(to)) {
+            Piece potentialEnemy = board.get(to);
 
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
-                addMove(allowedMoves, from,from.plus(-1, +1));
+                addMove(allowedMoves, from,to);
             }
         }
     }
     public void canCaptureLeftBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        if (canMoveLeft(from) && isValidMove(from.plus(-1,-1))) {
-            Piece potentialEnemy = board.get(from.plus(-1, -1));
+        Coordinates to = from.plus(-1,-1);
+        if (canMoveLeft(from) && isValidMove(to)) {
+            Piece potentialEnemy = board.get(to);
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
-                addMove(allowedMoves, from,from.plus(-1, -1));
+                addMove(allowedMoves, from,to);
             }
         }
     }
