@@ -28,7 +28,7 @@ public class Pawn extends AbstractPiece {
                 addMove(allowedMoves, from,from.plus(-2, 0));
             }
             if (isBlack() && hasNoPiecesBelowTwoSteps(from, board)){
-                    addMove(allowedMoves, from,from.plus(+2, 0));
+                addMove(allowedMoves, from,from.plus(+2, 0));
             }
         }
 
@@ -127,12 +127,7 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean isValidMove(Coordinates cord) {
-            if( cord.getCol() < 8 && cord.getCol() >= 0) {
-                if(cord.getRow() < 8 && cord.getRow() >= 0) {
-                    return true;
-                }
-            }
-        return false;
+        return cord.getCol() < 8 && cord.getCol() >= 0 && cord.getRow() < 8 && cord.getRow() >= 0;
     }
 
 }
