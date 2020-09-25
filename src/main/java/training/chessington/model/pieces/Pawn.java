@@ -32,10 +32,7 @@ public class Pawn extends AbstractPiece {
             }
         }
 
-        canCaptureRightWhiteEnemy(from,board,allowedMoves);
-        canCaptureLeftWhiteEnemy(from,board,allowedMoves);
-        canCaptureRightBlackEnemy(from,board,allowedMoves);
-        canCaptureLeftBlackEnemy(from,board,allowedMoves);
+        addCaptureEnemyMoves(from,board, allowedMoves);
 
         return allowedMoves;
     }
@@ -73,28 +70,18 @@ public class Pawn extends AbstractPiece {
         return board.get(from.plus(+2 ,0)) == null;
     }
 
-    public void canCaptureRightWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        Coordinates to = from.plus(+1,+1);
-        if (isValidMove(to) && hasEnemy(board, to)){
+    public void addCaptureEnemyMoves(Coordinates from, Board board, List<Move> allowedMoves){
+        List<Coordinates> potentialEnemies = new ArrayList<>();
+        potentialEnemies.add(from.plus(+1,+1));
+        potentialEnemies.add(from.plus(+1,-1));
+        potentialEnemies.add(from.plus(-1,+1));
+        potentialEnemies.add(from.plus(-1,-1));
+
+        for (int i = 0; i < potentialEnemies.size(); i++){
+            Coordinates to = potentialEnemies.get(i);
+            if (isValidMove(to) && hasEnemy(board, to)){
                 addMove(allowedMoves, from, to);
-        }
-    }
-    public void canCaptureLeftWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        Coordinates to = from.plus(+1,-1);
-        if (isValidMove(to) && hasEnemy(board, to)) {
-                addMove(allowedMoves, from,to);
-        }
-    }
-    public void canCaptureRightBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        Coordinates to = from.plus(-1,+1);
-        if (isValidMove(to) && hasEnemy(board, to)) {
-                addMove(allowedMoves, from,to);
-        }
-    }
-    public void canCaptureLeftBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
-        Coordinates to = from.plus(-1,-1);
-        if (isValidMove(to) && hasEnemy(board, to)) {
-                addMove(allowedMoves, from,to);
+            }
         }
     }
 
