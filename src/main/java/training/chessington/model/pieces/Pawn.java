@@ -17,43 +17,33 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowedMoves = new ArrayList<>();
 
-       // moveStep(from, board, 1step);
+        canMove(from,board,1,allowedMoves);
 
-       // moveStep(from, board, 2steps)
-
-
-        if (isWhite() && hasNoPiecesInFront(from, board,1)){
-            addMove(allowedMoves, from,from.plus(-1, 0));
-        }
-        if (isBlack() && hasNoPiecesInFront(from, board,1)){
-            addMove(allowedMoves, from,from.plus(+1, 0));
-        }
         if (isStartingPosition(from) && !allowedMoves.isEmpty()){
-            if (isWhite() && hasNoPiecesInFront(from,board,2)){
-                addMove(allowedMoves, from,from.plus(-2, 0));
-            }
-            if (isBlack() && hasNoPiecesInFront(from, board,2)){
-                addMove(allowedMoves, from,from.plus(+2, 0));
-            }
+            canMove(from,board,2,allowedMoves);
         }
-
         addCaptureEnemyMoves(from,board, allowedMoves);
 
         return allowedMoves;
     }
 
-    public boolean hasNoPiecesInFront(Coordinates from, Board board, int steps){
+    public void canMove(Coordinates from, Board board, int steps , List<Move> allowedMoves){
+        if (isWhite() && hasNoPiecesInFront(from, board,steps)){
+            addMove(allowedMoves, from,from.plus(-1*steps, 0));
+        }
+        if (isBlack() && hasNoPiecesInFront(from,board, steps)){
+            addMove(allowedMoves, from,from.plus(+1*steps, 0));
+        }
+    }
 
-        // if white check row -1
+    public boolean hasNoPiecesInFront(Coordinates from, Board board, int steps){
         if (isWhite() && isValidMove(from.plus(-1 *steps,0))){
             return board.get(from.plus(-1 * steps,0)) == null;
         }
-        // if black check row +1
         if (isBlack() && isValidMove(from.plus(+1*steps, 0))){
             return board.get(from.plus(+1 * steps,0)) == null;
         }
         return false;
-
     }
 
     public boolean isStartingPosition(Coordinates from){
@@ -89,7 +79,7 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean isValidMove(Coordinates cord) {
-        return cord.getCol() < 8 && cord.getCol() >= 0 && cord.getRow() < 8 && cord.getRow() >= 0;
+        return cord.getCol() <= 7 && cord.getCol() >= 0 && cord.getRow() <= 7 && cord.getRow() >= 0;
     }
 
     public boolean hasEnemy(Board board, Coordinates enemy){
