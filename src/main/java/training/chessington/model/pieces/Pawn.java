@@ -18,22 +18,26 @@ public class Pawn extends AbstractPiece {
         List<Move> allowedMoves = new ArrayList<>();
 
         if (isWhite() && hasNoPiecesAbove(from, board)){
-            allowedMoves.add(new Move(from, from.plus(-1, 0)));
+            addMove(allowedMoves, from,from.plus(-1, 0));
         }
 
         if (isBlack() && hasNoPiecesBelow(from, board)){
-            allowedMoves.add(new Move(from, from.plus(+1, 0)));
+            addMove(allowedMoves, from,from.plus(+1, 0));
         }
 
-        if (isStartingPosition(from)){
+        if (isStartingPosition(from) && !allowedMoves.isEmpty()){
             if (isWhite() && hasNoPiecesAboveTwoSteps(from,board)){
-                allowedMoves.add(new Move(from, from.plus(-2, 0)));
+                addMove(allowedMoves, from,from.plus(-2, 0));
             }
-
             if (isBlack() && hasNoPiecesBelowTwoSteps(from, board)){
-                    allowedMoves.add(new Move(from, from.plus(+2, 0)));
+                    addMove(allowedMoves, from,from.plus(+2, 0));
             }
         }
+
+        canCaptureRightWhiteEnemy(from,board,allowedMoves);
+        canCaptureLeftWhiteEnemy(from,board,allowedMoves);
+        canCaptureRightBlackEnemy(from,board,allowedMoves);
+        canCaptureLeftBlackEnemy(from,board,allowedMoves);
 
         return allowedMoves;
     }
@@ -43,7 +47,6 @@ public class Pawn extends AbstractPiece {
         if ( from.getRow() == 1 && isBlack() ){
             return true;
         }
-
         if ( from.getRow() == 6 && isWhite() ){
             return true;
         }
@@ -58,7 +61,7 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean hasNoPiecesAbove(Coordinates from, Board board){
-        if( isWhiteMoveInsideBoard(from)){
+        if( isValidMove(from.plus(-1,0))){
             return board.get(from.plus(-1 ,0)) == null;
         }
         return false;
@@ -69,7 +72,7 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean hasNoPiecesBelow(Coordinates from, Board board) {
-        if (isBlackMoveInsideBoard(from)) {
+        if (isValidMove(from.plus(+1,0))) {
             return board.get(from.plus(+1 ,0)) == null;
         }
         return false;
@@ -79,11 +82,62 @@ public class Pawn extends AbstractPiece {
         return board.get(from.plus(+2 ,0)) == null;
     }
 
-    public boolean isBlackMoveInsideBoard(Coordinates from){
-        return from.getRow() + 1 < 8;
+    public void canCaptureRightWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
+        if (canMoveRight(from) && isValidMove(from.plus(+1,+1))){
+            Piece potentialEnemy = board.get(from.plus(+1, +1));
+
+            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)){
+                addMove(allowedMoves, from,from.plus(+1, +1));
+            }
+        }
+    }
+    public void canCaptureLeftWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
+        if (canMoveLeft(from) && isValidMove(from.plus(+1, -1))) {
+            Piece potentialEnemy = board.get(from.plus(+1, -1));
+
+            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
+                addMove(allowedMoves, from,from.plus(+1, -1));
+            }
+        }
+    }
+    public void canCaptureRightBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
+        if (canMoveRight(from) && isValidMove(from.plus(-1,+1))) {
+            Piece potentialEnemy = board.get(from.plus(-1, +1));
+
+            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
+                addMove(allowedMoves, from,from.plus(-1, +1));
+            }
+        }
+    }
+    public void canCaptureLeftBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
+        if (canMoveLeft(from) && isValidMove(from.plus(-1,-1))) {
+            Piece potentialEnemy = board.get(from.plus(-1, -1));
+            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
+                addMove(allowedMoves, from,from.plus(-1, -1));
+            }
+        }
     }
 
-    public boolean isWhiteMoveInsideBoard(Coordinates from){
-        return from.getRow() -1 >= 0;
+    public boolean canMoveLeft(Coordinates from) {
+        return from.getCol() > 0;
     }
+    public boolean canMoveRight(Coordinates from) {
+        return from.getCol()  < 7;
+    }
+
+    public void addMove(List<Move> allowedMoves, Coordinates from,Coordinates to){
+        if (isValidMove(from) && isValidMove(to)) {
+            allowedMoves.add(new Move(from, to));
+        }
+    }
+
+    public boolean isValidMove(Coordinates cord) {
+            if( cord.getCol() < 8 && cord.getCol() >= 0) {
+                if(cord.getRow() < 8 && cord.getRow() >= 0) {
+                    return true;
+                }
+            }
+        return false;
+    }
+
 }
