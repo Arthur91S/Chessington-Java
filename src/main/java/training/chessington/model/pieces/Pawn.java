@@ -75,41 +75,26 @@ public class Pawn extends AbstractPiece {
 
     public void canCaptureRightWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(+1,+1);
-        if (isValidMove(to)){
-            Piece potentialEnemy = board.get(to);
-
-            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)){
+        if (isValidMove(to) && hasEnemy(board, to)){
                 addMove(allowedMoves, from, to);
-            }
         }
     }
     public void canCaptureLeftWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(+1,-1);
-        if (isValidMove(to)) {
-            Piece potentialEnemy = board.get(to);
-
-            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
+        if (isValidMove(to) && hasEnemy(board, to)) {
                 addMove(allowedMoves, from,to);
-            }
         }
     }
     public void canCaptureRightBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(-1,+1);
-        if (isValidMove(to)) {
-            Piece potentialEnemy = board.get(to);
-
-            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
+        if (isValidMove(to) && hasEnemy(board, to)) {
                 addMove(allowedMoves, from,to);
-            }
         }
     }
     public void canCaptureLeftBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(-1,-1);
-        if (isValidMove(to)) {
-            Piece potentialEnemy = board.get(to);
-            if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
+        if (isValidMove(to) && hasEnemy(board, to)) {
                 addMove(allowedMoves, from,to);
-            }
         }
     }
 
@@ -122,5 +107,11 @@ public class Pawn extends AbstractPiece {
     public boolean isValidMove(Coordinates cord) {
         return cord.getCol() < 8 && cord.getCol() >= 0 && cord.getRow() < 8 && cord.getRow() >= 0;
     }
+
+    public boolean hasEnemy(Board board, Coordinates enemy){
+        Piece potentialEnemy = board.get(enemy);
+        return potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour);
+    }
+
 
 }
