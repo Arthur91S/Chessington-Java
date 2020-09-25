@@ -282,4 +282,34 @@ public class PawnTest {
         Coordinates otherDiagonal = pawnCoords.plus(1, -1);
         assertThat(moves).doesNotContain(new Move(pawnCoords, otherDiagonal));
     }
+
+    @Test
+    public void blackPawnsCannotMoveBackwards(){
+
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.BLACK);
+        Coordinates coords = new Coordinates(1, 4);
+        board.placePiece(coords, pawn);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(-1, 0)));
+    }
+
+    @Test
+    public void whitePawnsCannotMoveBackwards(){
+
+        Board board = Board.empty();
+        Piece pawn = new Pawn(PlayerColour.WHITE);
+        Coordinates coords = new Coordinates(6, 4);
+        board.placePiece(coords, pawn);
+
+        // Act
+        List<Move> moves = pawn.getAllowedMoves(coords, board);
+
+        // Assert
+        assertThat(moves).doesNotContain(new Move(coords, coords.plus(+1, 0)));
+    }
 }

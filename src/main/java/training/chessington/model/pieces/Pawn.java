@@ -17,17 +17,22 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowedMoves = new ArrayList<>();
 
-        if (hasNoPiecesInFront(from, board,1)){
+       // moveStep(from, board, 1step);
+
+       // moveStep(from, board, 2steps)
+
+
+        if (isWhite() && hasNoPiecesInFront(from, board,1)){
             addMove(allowedMoves, from,from.plus(-1, 0));
         }
-        if (hasNoPiecesInFront(from, board,1)){
+        if (isBlack() && hasNoPiecesInFront(from, board,1)){
             addMove(allowedMoves, from,from.plus(+1, 0));
         }
         if (isStartingPosition(from) && !allowedMoves.isEmpty()){
-            if (hasNoPiecesInFront(from,board,2)){
+            if (isWhite() && hasNoPiecesInFront(from,board,2)){
                 addMove(allowedMoves, from,from.plus(-2, 0));
             }
-            if (hasNoPiecesInFront(from, board,2)){
+            if (isBlack() && hasNoPiecesInFront(from, board,2)){
                 addMove(allowedMoves, from,from.plus(+2, 0));
             }
         }
@@ -44,7 +49,7 @@ public class Pawn extends AbstractPiece {
             return board.get(from.plus(-1 * steps,0)) == null;
         }
         // if black check row +1
-        if (isBlack() && isValidMove(from.plus(+1*steps,0))){
+        if (isBlack() && isValidMove(from.plus(+1*steps, 0))){
             return board.get(from.plus(+1 * steps,0)) == null;
         }
         return false;
