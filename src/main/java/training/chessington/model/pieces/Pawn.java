@@ -75,7 +75,7 @@ public class Pawn extends AbstractPiece {
 
     public void canCaptureRightWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(+1,+1);
-        if (canMoveRight(from) && isValidMove(to)){
+        if (isValidMove(to)){
             Piece potentialEnemy = board.get(to);
 
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)){
@@ -85,7 +85,7 @@ public class Pawn extends AbstractPiece {
     }
     public void canCaptureLeftWhiteEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(+1,-1);
-        if (canMoveLeft(from) && isValidMove(to)) {
+        if (isValidMove(to)) {
             Piece potentialEnemy = board.get(to);
 
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
@@ -95,7 +95,7 @@ public class Pawn extends AbstractPiece {
     }
     public void canCaptureRightBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(-1,+1);
-        if (canMoveRight(from) && isValidMove(to)) {
+        if (isValidMove(to)) {
             Piece potentialEnemy = board.get(to);
 
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
@@ -105,19 +105,12 @@ public class Pawn extends AbstractPiece {
     }
     public void canCaptureLeftBlackEnemy(Coordinates from, Board board, List<Move> allowedMoves) {
         Coordinates to = from.plus(-1,-1);
-        if (canMoveLeft(from) && isValidMove(to)) {
+        if (isValidMove(to)) {
             Piece potentialEnemy = board.get(to);
             if (potentialEnemy != null && !potentialEnemy.getColour().equals(this.colour)) {
                 addMove(allowedMoves, from,to);
             }
         }
-    }
-
-    public boolean canMoveLeft(Coordinates from) {
-        return from.getCol() > 0;
-    }
-    public boolean canMoveRight(Coordinates from) {
-        return from.getCol()  < 7;
     }
 
     public void addMove(List<Move> allowedMoves, Coordinates from,Coordinates to){
