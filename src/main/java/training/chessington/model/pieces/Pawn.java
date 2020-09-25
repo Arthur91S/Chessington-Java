@@ -17,11 +17,6 @@ public class Pawn extends AbstractPiece {
     public List<Move> getAllowedMoves(Coordinates from, Board board) {
         List<Move> allowedMoves = new ArrayList<>();
 
-       // moveStep(from, board, 1step);
-
-       // moveStep(from, board, 2steps)
-
-
         if (hasNoPiecesInFront(from, board,1)){
             addMove(allowedMoves, from,from.plus(-1, 0));
         }
@@ -56,12 +51,6 @@ public class Pawn extends AbstractPiece {
 
     }
 
-//    public void moveOneStep(Coordinates from, Board board, List<Move> allowedMoves){
-//
-//    }
-
-
-
     public boolean isStartingPosition(Coordinates from){
         return isBlack() ? from.getRow() == 1 : from.getRow() == 6;
     }
@@ -71,28 +60,6 @@ public class Pawn extends AbstractPiece {
     }
     public boolean isBlack(){
         return colour == PlayerColour.BLACK;
-    }
-
-    public boolean hasNoPiecesAbove(Coordinates from, Board board){
-        if( isValidMove(from.plus(-1,0))){
-            return board.get(from.plus(-1 ,0)) == null;
-        }
-        return false;
-    }
-
-    public boolean hasNoPiecesAboveTwoSteps(Coordinates from, Board board){
-        return board.get(from.plus(-2 ,0)) == null;
-    }
-
-    public boolean hasNoPiecesBelow(Coordinates from, Board board) {
-        if (isValidMove(from.plus(+1,0))) {
-            return board.get(from.plus(+1 ,0)) == null;
-        }
-        return false;
-    }
-
-    public boolean hasNoPiecesBelowTwoSteps(Coordinates from, Board board) {
-        return board.get(from.plus(+2 ,0)) == null;
     }
 
     public void addCaptureEnemyMoves(Coordinates from, Board board, List<Move> allowedMoves){
