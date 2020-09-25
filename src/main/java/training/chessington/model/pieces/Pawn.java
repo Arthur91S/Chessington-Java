@@ -43,14 +43,7 @@ public class Pawn extends AbstractPiece {
     }
 
     public boolean isStartingPosition(Coordinates from){
-
-        if ( from.getRow() == 1 && isBlack() ){
-            return true;
-        }
-        if ( from.getRow() == 6 && isWhite() ){
-            return true;
-        }
-        return false;
+        return isBlack() ? from.getRow() == 1 : from.getRow() == 6;
     }
 
     public boolean isWhite(){
